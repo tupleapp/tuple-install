@@ -1,0 +1,130 @@
+#!/usr/bin/env bash
+
+# install-tuple.sh
+#
+# Script for making the install process of Tuple.app just a little bit nicer :-)
+
+# Author: Spencer Dixon <spencer@tuple.app>
+# Copyright: Tuple, LLC 
+
+############
+# Constants
+############
+
+LATEST_URL="https://production.tuple.app/downloads/latest"
+APP_NAME="Tuple.app"
+WORK_DIR=`mktemp -d`
+
+############
+# Utilities
+############
+
+pad() { 
+  echo 
+}
+
+log() {
+  echo  "      $1"
+}
+
+info() {
+  echo  "  ℹ️   $1"
+}
+
+success() {
+  echo  "  ✅  $1"
+}
+
+warn() {
+  echo  "  ⚠️   $1"
+}
+
+error() {
+  echo  "  ❌  $1"
+}
+
+logo() {
+cat << EOF
+   ______          __      ____         __       ____
+  /_  __/_ _____  / /__   /  _/__  ___ / /____ _/ / /
+   / / / // / _ \/ / -_) _/ // _ \(_-</ __/ _ '/ / /
+  /_/  \_,_/ .__/_/\__/ /___/_//_/___/\__/\_,_/_/_/
+          /_/
+  =================================================
+EOF
+}
+
+cleanup() {
+  popd > /dev/null
+  rm -rf "$WORK_DIR"
+  success "Deleted temp directory used to install Tuple: ${WORK_DIR}"
+}
+
+############
+# Install
+############
+
+# Ensure we have a valid working directory to do the install in
+if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
+  error "Could not create temp dir to fetch Tuple in"
+  exit 1
+fi
+
+# Register the cleanup function to be called on the EXIT signal
+trap cleanup EXIT
+
+pad
+logo
+pad
+
+pushd "$WORK_DIR" > /dev/null
+
+# Fetch latest
+info "Fetching the latest version of Tuple"
+pad
+curl -o Tuple-latest.zip -J -L ${LATEST_URL} > /dev/null
+pad
+success "Successfully fetched ${APP_NAME}"
+
+# Unzip
+info "Unzipping..."
+unzip Tuple-latest -d . > /dev/null
+success "Successfully unzipped"
+
+# Move to proper location
+info "Moving ${APP_NAME} to your /Applications directory"
+
+if open -Ra "${APP_NAME}" ; then
+  warn "${APP_NAME} already exists, are you sure you want to overwrite? (y/n)"
+  read -p "$1" choice
+  case "$choice" in
+    y|Y ) rm -rf /Applications/${APP_NAME}; mv ${APP_NAME} /Applications;;
+    n|N ) info "Exiting..."; exit 1;;
+    * ) warn "Invalid option, exiting"; exit 1;;
+  esac
+  success "Successfully overwrote your old version of ${APP_NAME}"
+else
+  mv ${APP_NAME} /Applications
+fi
+
+# Appreciation :-)
+pad
+log "Thank you for trying out Tuple!  We're a small bootstrapped company"
+log "with a mission to create the greatest pair programming app possible."
+pad
+log "If there is anything we can do to improve your experience please don't"
+log "hesitate to reach out. Contact: spencer@tuple.app"
+pad
+log "To learn more pair programming tips visit: https://learntopair.com"
+pad
+
+success "Tuple is ready to go!"
+info "Would you like to open now? (y/n)"
+
+read -p "$1" choice
+case "$choice" in
+  y|Y ) open /Applications/TupleStaging.app;;
+  n|N ) info "No problem, when you do open Tuple it will be located in your top toolbar";;
+  * ) warn "Invalid option, exiting";;
+esac
+
