@@ -4,5 +4,5 @@
 `Tuple.app`.
 
 ```sh
-$ curl TBD | bash
+$ curl -L https://git.io/tuple-install | bash
 ```
