@@ -11,8 +11,8 @@
 # Constants
 ############
 
-LATEST_URL="https://production.tuple.app/downloads/latest"
-APP_NAME="Tuple.app"
+LATEST_URL="https://staging.tuple.app/downloads/latest"
+APP_NAME="TupleStaging.app"
 WORK_DIR=`mktemp -d`
 
 ############
