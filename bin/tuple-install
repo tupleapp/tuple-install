@@ -94,7 +94,7 @@ success "Successfully unzipped"
 # Move to proper location
 info "Moving ${APP_NAME} to your /Applications directory"
 
-if open -Ra "${APP_NAME}" ; then
+if [[ -d "/Applications/${APP_NAME}" ]]; then
   warn "${APP_NAME} already exists, are you sure you want to overwrite?"
 
   # Determine where to read user input from:
