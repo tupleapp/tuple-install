@@ -80,7 +80,7 @@ pad
 pushd "$WORK_DIR" > /dev/null
 
 # Fetch latest
-info "Fetching the latest version of Tuple"
+info "Fetching the latest version of ${APP_NAME}"
 pad
 curl -o Tuple-latest.zip -J -L ${LATEST_URL} > /dev/null
 pad
@@ -95,13 +95,26 @@ success "Successfully unzipped"
 info "Moving ${APP_NAME} to your /Applications directory"
 
 if open -Ra "${APP_NAME}" ; then
-  warn "${APP_NAME} already exists, are you sure you want to overwrite? (y/n)"
-  read -p "$1" choice
-  case "$choice" in
-    y|Y ) rm -rf /Applications/${APP_NAME}; mv ${APP_NAME} /Applications;;
-    n|N ) info "Exiting..."; exit 1;;
-    * ) warn "Invalid option, exiting"; exit 1;;
-  esac
+  warn "${APP_NAME} already exists, are you sure you want to overwrite?"
+
+  # Determine where to read user input from:
+  #   If -f ${BASH_SOURCE} is true, we're running from a local script file, such as during testing, so we respect whatever stdin is set to, so that user input can be *simulated*.
+  #   Otherwise, the assumption is that we're running via curl ... | bash, in which case we always want to read from /dev/tty - giving us a chance to
+  #   to pipe the script contents via stdin, while soliciting user input from the terminal (unless -y was specified to skipt he confirmation prompt).
+  [[ -f ${BASH_SOURCE} ]] && src='/dev/stdin' || src='/dev/tty'
+
+  # Prompt the user:
+  pad
+  while :; do
+    read -ep "CONTINUE (y/N)? " promptInput < "$src" || exit # `read` fails only if stdin does NOT come from a terminal
+    [[ $promptInput =~ ^[nN]$ || -z $promptInput ]] && { echo "Aborted." >&2; exit 3; }
+    [[ $promptInput != [yY] ]] && { echo "Invalid input; please try again." 1>&2; continue; }
+    break
+  done
+  pad
+
+  rm -rf /Applications/${APP_NAME}
+  mv ${APP_NAME} /Applications
   success "Successfully overwrote your old version of ${APP_NAME}"
 else
   mv ${APP_NAME} /Applications
@@ -119,12 +132,7 @@ log "To learn more pair programming tips visit: https://learntopair.com"
 pad
 
 success "Tuple is ready to go!"
-info "Would you like to open now? (y/n)"
+info "Opening ${APP_NAME} for you..."
 
-read -p "$1" choice
-case "$choice" in
-  y|Y ) open /Applications/TupleStaging.app;;
-  n|N ) info "No problem, when you do open Tuple it will be located in your top toolbar";;
-  * ) warn "Invalid option, exiting";;
-esac
+open /Applications/${APP_NAME}
 
