@@ -79,6 +79,9 @@ pad
 
 pushd "$WORK_DIR" > /dev/null
 
+info "Uninstalling any brew versions already installed"
+brew cask uninstall tuplestaging
+
 # Fetch latest
 info "Fetching the latest version of Tuple"
 pad
