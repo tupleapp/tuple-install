@@ -79,6 +79,11 @@ pad
 
 pushd "$WORK_DIR" > /dev/null
 
+if brew cask ls --versions tuple > /dev/null 2>&1; then
+  info "Uninstalling any Homebrew versions already installed"
+  brew cask uninstall tuple 
+fi
+
 # Fetch latest
 info "Fetching the latest version of ${APP_NAME}"
 pad
