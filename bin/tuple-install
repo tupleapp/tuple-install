@@ -139,5 +139,4 @@ pad
 success "Tuple is ready to go!"
 info "Opening ${APP_NAME} for you..."
 
-open /Applications/${APP_NAME}
-
+open -n /Applications/${APP_NAME}
