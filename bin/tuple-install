@@ -84,6 +84,9 @@ if brew cask ls --versions tuple > /dev/null 2>&1; then
   brew cask uninstall tuple 
 fi
 
+info "Ensuring Tuple is closed before starting upgrade process"
+osascript -e 'quit app "Tuple"'
+
 # Fetch latest
 info "Fetching the latest version of ${APP_NAME}"
 pad
