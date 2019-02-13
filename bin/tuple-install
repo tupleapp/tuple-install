@@ -84,6 +84,9 @@ if brew cask ls --versions tuplestaging > /dev/null 2>&1; then
   brew cask uninstall tuplestaging
 fi
 
+info "Ensuring Tuple is closed before starting upgrade process"
+osascript -e 'quit app "TupleStaging"'
+
 # Fetch latest
 info "Fetching the latest version of Tuple"
 pad
@@ -139,5 +142,4 @@ pad
 success "Tuple is ready to go!"
 info "Opening ${APP_NAME} for you..."
 
-osascript -e 'quit app "TupleStaging"'
 open /Applications/${APP_NAME}
