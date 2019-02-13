@@ -143,3 +143,5 @@ success "Tuple is ready to go!"
 info "Opening ${APP_NAME} for you..."
 
 open -n /Applications/${APP_NAME}
+pad
+log "You will find the Tuple logo in the toolbar on the top of your screen."
