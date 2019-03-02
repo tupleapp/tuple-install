@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# install-tuple.sh
+# tuple-install.sh
 #
 # Script for making the install process of Tuple.app just a little bit nicer :-)
 
@@ -108,7 +108,7 @@ if [[ -d "/Applications/${APP_NAME}" ]]; then
   # Determine where to read user input from:
   #   If -f ${BASH_SOURCE} is true, we're running from a local script file, such as during testing, so we respect whatever stdin is set to, so that user input can be *simulated*.
   #   Otherwise, the assumption is that we're running via curl ... | bash, in which case we always want to read from /dev/tty - giving us a chance to
-  #   to pipe the script contents via stdin, while soliciting user input from the terminal (unless -y was specified to skipt he confirmation prompt).
+  #   to pipe the script contents via stdin, while soliciting user input from the terminal.
   [[ -f ${BASH_SOURCE} ]] && src='/dev/stdin' || src='/dev/tty'
 
   # Prompt the user:
