@@ -64,6 +64,17 @@ cleanup() {
 # Install
 ############
 
+# Ensure we're on supported platform
+if [ "$(uname)" != "Darwin" ]
+then
+  pad
+  error "Uh oh! We don't yet support your platform (we're macOS only)."
+  pad
+  log "Ping our CEO and annoy him if you think Tuple should exist on your
+  platform: ben@tuple.app"
+  exit 1
+fi
+
 # Ensure we have a valid working directory to do the install in
 if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
   error "Could not create temp dir to fetch Tuple in"
