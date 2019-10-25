@@ -72,6 +72,7 @@ then
   pad
   log "Ping our CEO and annoy him if you think Tuple should exist on your
   platform: ben@tuple.app"
+  exit 1
 fi
 
 # Ensure we have a valid working directory to do the install in
