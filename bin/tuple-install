@@ -147,7 +147,7 @@ pad
 log "If there is anything we can do to improve your experience please don't"
 log "hesitate to reach out. Contact: spencer@tuple.app"
 pad
-log "To learn more pair programming tips visit: http://learntopair.com"
+log "To learn more pair programming tips visit: https://tuple.app/pair-programming-guide"
 pad
 
 success "Tuple is ready to go!"
