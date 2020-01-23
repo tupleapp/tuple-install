@@ -92,6 +92,11 @@ info "Unzipping..."
 unzip Tuple-latest -d . > /dev/null
 success "Successfully unzipped"
 
+# infer whether user can write to /Applications
+# if not, try the ~/Applications directory
+if [[ ! -w "${APP_INSTALL_DIR}/" ]]; then
+	APP_INSTALL_DIR="${HOME}/Applications"
+fi
 # Move to proper location
 info "Moving ${APP_NAME} to your ${APP_INSTALL_DIR} directory"
 
@@ -135,5 +140,5 @@ pad
 success "Tuple is ready to go!"
 info "Opening ${APP_NAME} for you..."
 
-open -a ${APP_NAME}
+open "${APP_INSTALL_DIR}/${APP_NAME}"
 
