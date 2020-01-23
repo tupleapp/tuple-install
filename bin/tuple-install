@@ -13,6 +13,7 @@
 
 LATEST_URL="https://production.tuple.app/downloads/latest"
 APP_NAME="Tuple.app"
+APP_INSTALL_DIR="/Applications"
 WORK_DIR=`mktemp -d`
 
 ############
@@ -92,9 +93,9 @@ unzip Tuple-latest -d . > /dev/null
 success "Successfully unzipped"
 
 # Move to proper location
-info "Moving ${APP_NAME} to your /Applications directory"
+info "Moving ${APP_NAME} to your ${APP_INSTALL_DIR} directory"
 
-if [[ -d "/Applications/${APP_NAME}" ]]; then
+if [[ -d "${APP_INSTALL_DIR}/${APP_NAME}" ]]; then
   warn "${APP_NAME} already exists, are you sure you want to overwrite?"
 
   # Determine where to read user input from:
@@ -113,11 +114,11 @@ if [[ -d "/Applications/${APP_NAME}" ]]; then
   done
   pad
 
-  rm -rf /Applications/${APP_NAME}
-  mv ${APP_NAME} /Applications
+  rm -rf ${APP_INSTALL_DIR:?}/${APP_NAME}
+  mv ${APP_NAME} ${APP_INSTALL_DIR}
   success "Successfully overwrote your old version of ${APP_NAME}"
 else
-  mv ${APP_NAME} /Applications
+  mv ${APP_NAME} ${APP_INSTALL_DIR}
 fi
 
 # Appreciation :-)
@@ -134,5 +135,5 @@ pad
 success "Tuple is ready to go!"
 info "Opening ${APP_NAME} for you..."
 
-open /Applications/${APP_NAME}
+open -a ${APP_NAME}
 
