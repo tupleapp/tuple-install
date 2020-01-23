@@ -5,7 +5,7 @@
 # Script for making the install process of Tuple.app just a little bit nicer :-)
 
 # Author: Spencer Dixon <spencer@tuple.app>
-# Copyright: Tuple, LLC 
+# Copyright: Tuple, LLC
 
 ############
 # Constants
@@ -19,8 +19,8 @@ WORK_DIR=`mktemp -d`
 # Utilities
 ############
 
-pad() { 
-  echo 
+pad() {
+  echo
 }
 
 log() {
